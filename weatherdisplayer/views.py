@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # from bs4 import BeautifulSoup
-
+from django.http import HttpResponse
 
 
 
@@ -21,12 +21,18 @@ def home(request):
     if 'city' in request.GET:
         city = request.GET.get('city')
         html_content = get_html_content(city)
-        # print(html_content)
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(html_content, 'html.parser')
-        region = soup.find('div',attrs={'id': "wob_loc"})
-        if region is not None:
-            print(region)
-        else:
-            print("Not Available")
-    return render(request,'weatherdisplayer/home.html')
+        result = dict()
+        try:
+            # extract regionBNeawe s3v9rd AP7Wnd
+            result['region'] = soup.find("span", attrs={"class": "BNeawe tAd8D AP7Wnd"}).text
+            # extract temperature now
+            result['temp_now'] = soup.find("div", attrs={"class": "BNeawe iBp4i AP7Wnd"}).text
+            # get the day, hour and actual weather
+            result['dayhour'], result['weather_now'] = soup.find("div", attrs={"class": "BNeawe tAd8D AP7Wnd"}).text.split(
+                '\n')
+            return render(request, 'weatherdisplayer/home.html',{'result': result})
+        except:
+            return HttpResponse("please check the city name")
+    return HttpResponse("please check the city name")

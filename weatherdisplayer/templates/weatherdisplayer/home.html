@@ -45,9 +45,15 @@
     <h1>Find Weather</h1>
     <form method="GET">
             <label for="city"></label>
-            <input type="text" name="city" id="city" placeholder="Enter a City"><br>
+            <input type="text" name="city" id="city" value="{{ request.GET.city }}" placeholder="Enter a City"><br>
             <input type="submit" value="submit">
     </form>
+    {% if result %}
+    <h3>{{ result.region }}</h3>
+    <h3>{{ result.dayhour }}</h3>
+    <h3>{{ result.temp_now }}</h3>
+    <h3>{{ result.weather_now }}</h3>
+{% endif %}
 </div>
 </body>
 </html>
