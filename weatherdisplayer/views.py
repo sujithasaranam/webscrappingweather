@@ -1,6 +1,6 @@
 from django.shortcuts import render
 # from bs4 import BeautifulSoup
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 
 
@@ -35,4 +35,4 @@ def home(request):
             return render(request, 'weatherdisplayer/home.html',{'result': result})
         except:
             return HttpResponse("please check the city name")
-    return HttpResponse("please check the city name")
+    return render(request, 'weatherdisplayer/home.html')
